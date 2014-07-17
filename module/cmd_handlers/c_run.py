@@ -8,7 +8,7 @@ def cmd_run(opt, slist):
     run_list = []
     already_run_list = []
     for i, s in util.next_target(opt, slist):
-        cmd_pid = 'ps ax|awk -v pn={0} -v r=1 \'$0~pn && $0!~/awk/ {{ r=0 }} END {{ exit r }}\'' \
+        cmd_pid = 'ps ax|awk -v pn={0} -v r=1 \'$0~"/"pn {{ r=0 }} END {{ exit r }}\'' \
                 .format(Config.target_name(s.target))
         try:
             check_call(cmd_pid, shell=True)

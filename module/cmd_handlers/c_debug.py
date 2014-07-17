@@ -6,7 +6,7 @@ from ..config import Config
 
 def cmd_debug(opt, slist):
     s = next(util.next_target(opt, slist))[1]
-    cmd_pid = 'ps ax|awk -v pn={0} -v r=1 \'$0~pn && $0!~/awk/ {{ print $1; r=0 }} END {{ exit r }}\'' \
+    cmd_pid = 'ps ax|awk -v pn={0} -v r=1 \'$0~"/"pn {{ print $1; r=0 }} END {{ exit r }}\'' \
             .format(Config.target_name(s.target))
     try:
         pid = check_output(cmd_pid, shell=True)
