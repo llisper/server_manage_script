@@ -1,3 +1,4 @@
+import signal
 from os import path
 from subprocess import call, check_output, CalledProcessError
 from .. import util
@@ -14,4 +15,5 @@ def cmd_debug(opt, slist):
         return
 
     cmd_gdb = 'gdb --pid={0} {1}'.format(int(pid), path.join(s.run, Config.target_name(s.target)))
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
     call(cmd_gdb, shell=True)
