@@ -7,7 +7,7 @@ def cmd_list(opt, slist):
     output_str = '--------------------------------------------------\n'
     for i, s in util.next_target(opt, slist):
         pstat_script = """
-        pid=`ps ax|awk -v pn={0} -v r=1 \'$0~"/"pn {{ print $1; r=0 }} END {{ exit r }}\'`
+        pid=`ps ax|awk -v pn={0} -v r=1 \'$0~"[.]/"pn {{ print $1; r=0 }} END {{ exit r }}\'`
         retcode=$?
         if [ ! $retcode -eq 0 ]
         then
