@@ -24,32 +24,49 @@ server_list = [
         Server('RankListServer'),
         ]
 
-# build parser
-cmd_list = ['list', 'debug', 'log', 'compile', 'install', 'run', 'stop', 'restart']
-target_names = list(s.target for s in server_list)
-target_indexes = range(len(server_list))
+# sub command
+cmd_list = ['list', 'debug', 'log', 'compile', 'install', 'run', 'stop', 'restart', 'push']
+targets = list(s.target for s in server_list) + list(str(i) for i in range(len(server_list)))
 
+# compile [-r,--rebuild] [-i,-inverse] [-t,--targets ...]
+# install [-i,-inverse] [-t,--targets ...]
+# list [-i,-inverse] [-t,--targets ...]
+# debug [-t,--targets ...]
+# log [-t,--targets ...] -- [args...]
+# run [-v,interval val] [-i,-inverse] [-t,--targets ...]
+# stop [-i,-inverse] [-t,--targets ...]
+# restart [-v,interval val] [-i,-inverse] [-t,--targets ...]
+# push svr_name -- [args...]
 parser = argparse.ArgumentParser()
-parser.add_argument('cmd', help='select a command from: ' + ','.join(cmd_list), \
-                    choices=cmd_list, metavar="cmd")
-parser.add_argument('-r', '--rebuild', help='rebuild flag, use with \'compile\' command', \
-                    action='store_true')
-parser.add_argument('-v', '--interval', help='wait \'interval\' sec before apply command on next target, \
-                    use with \'run,restart\' commands', type=float, \
-                    default=0.0)
-parser.add_argument('-t', '--targets', help='specify targets by name', \
-                    choices=target_names, metavar="", nargs='*', \
-                    default=[])
-parser.add_argument('-i', '--target_indexes', help='specify targets by index', \
-                    choices=target_indexes, type=int, metavar="", nargs='*', \
-                    default=[])
-parser.add_argument('-c', '--clean_shm', help='clean share memory, use with \'stop\' command', \
-                    action='store_true')
-parser.add_argument('--args', help='the rest args will be passed on to command handler', \
-                    nargs='*', default=[])
+sub_parser = parser.add_subparsers(help="type 'subcmd help' to get help text")
+sub_cmd = {}
+for cmd in cmd_list:
+    sub_cmd[cmd] = sub_parser.add_parser(cmd)
 
-#opt = parser.parse_args()
-#print opt
+for cmd in ['list', 'debug', 'log', 'compile', 'install', 'run', 'stop', 'restart']:
+    sub_cmd[cmd].add_argument('-t', '--targets', help='specify targets by name or index', \
+                              choices=targets, metavar="", nargs='*', \
+                              default=[])
+
+for cmd in ['list', 'compile', 'install', 'run', 'stop', 'restart']:
+    sub_cmd[cmd].add_argument('-i', '--inverse', help='inverse selection flag', \
+                              action='store_true')
+
+for cmd in ['run', 'restart']:
+    sub_cmd[cmd].add_argument('-v', '--interval', help='wait \'interval\' sec before apply command on next target', \
+                              type=float, default=0.0)
+
+for cmd in ['stop', 'restart']:
+    sub_cmd[cmd].add_argument('-c', '--clean_shm', help='clean share memory flag', \
+                              action='store_true')
+
+sub_cmd['compile'].add_argument('-r', '--rebuild', help='rebuild flag', \
+                                action='store_true')
+
+sub_cmd['push'].add_argument('service_name')
+
+for cmd in ['log', 'push']:
+    sub_cmd[cmd].add_argument('args', nargs=argparse.REMAINDER, default=[])
 
 # run
 Driver.run(parser, *[server_list])
