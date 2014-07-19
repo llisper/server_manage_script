@@ -15,7 +15,7 @@ def next_target(opt, slist):
 
     for i in indexes or range(len(slist)): yield i, slist[i]
 
-def root_path():
+def source_root():
     f = inspect.getfile(inspect.currentframe())
     d = os.path.dirname(os.path.abspath(f))
     return os.path.normpath(os.path.join(d, '..'))

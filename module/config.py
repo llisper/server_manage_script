@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
+import os
 from os import path
-from util import root_path
 
 class Config:
-    root = root_path()
+    root = os.getcwd()
     code = path.join(root, 'Server')
     run = path.join(root, 'Run')
     suffix = 'simple'
