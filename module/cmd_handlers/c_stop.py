@@ -1,7 +1,7 @@
 import time
 from subprocess import call
-from ..config import Config
-from .. import util
+from module.config import Config
+from module import util
 
 def cmd_stop(opt, slist):
     t = 'ps ax|awk -v pn={0} -v r=1 \'$0~"[.]/"pn {{ print "{1}", $1; r=0 }} END {{ exit r }}\''

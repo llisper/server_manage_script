@@ -1,7 +1,7 @@
 from os import path
 from subprocess import call
-from ..config import Config
-from .. import util
+from module.config import Config
+from module import util
 
 def cmd_install(opt, slist):
     num_installation = 0

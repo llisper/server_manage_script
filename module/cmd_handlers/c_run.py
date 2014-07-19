@@ -1,8 +1,8 @@
 import os
 import time
 from subprocess import call, check_call, CalledProcessError
-from .. import util
-from ..config import Config
+from module import util
+from module.config import Config
 
 def cmd_run(opt, slist):
     run_list = []

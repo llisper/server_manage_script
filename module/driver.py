@@ -13,8 +13,8 @@ class Driver:
                 self.cmd_handlers[m.group(1)] = h
 
     def run(self, parser, *args):
-        cmd = sys.argv[1]
         opt = parser.parse_args()
+        cmd = sys.argv[1]
         opt.args = hasattr(opt, 'args') and opt.args or []
         if len(opt.args) > 0 and opt.args[0] == '--':
             opt.args = opt.args[1:]

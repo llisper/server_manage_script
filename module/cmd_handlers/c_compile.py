@@ -1,7 +1,7 @@
 import os
 from subprocess import call
-from ..config import Config
-from .. import util
+from module.config import Config
+from module import util
 
 def cmd_compile(opt, slist):
     num_compile = 0

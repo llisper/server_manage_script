@@ -1,10 +1,11 @@
 #!/usr/bin/python
 
-import argparse
+import re, sys, argparse, inspect
 from os import path
 from module.config import Config
 from module.server import Server
-from module.cmd_handlers import Driver
+from module.driver import Driver
+from module.cmd_handlers import *
 
 # declare servers
 server_list = [
@@ -69,4 +70,11 @@ for cmd in ['log', 'push']:
     sub_cmd[cmd].add_argument('args', nargs=argparse.REMAINDER, default=[])
 
 # run
-Driver.run(parser, *[server_list])
+handler_list = []
+for name in sys.modules:
+    m = re.search(r'.*\.c_(\w+)$', name)
+    if m:
+        handler_list.append(getattr(sys.modules[name], 'cmd_' + m.group(1)))
+
+driver = Driver(*handler_list)
+driver.run(parser, *[server_list])

@@ -1,6 +1,6 @@
 from os import path
 from subprocess import call
-from .. import util
+from module import util
 
 def cmd_log(opt, slist, pattern='', color=''):
     s = next(util.next_target(opt, slist))[1]

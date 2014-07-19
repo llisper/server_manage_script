@@ -1,7 +1,7 @@
 import tempfile
 from subprocess import check_output, CalledProcessError
-from ..config import Config
-from .. import util
+from module.config import Config
+from module import util
 
 def cmd_list(opt, slist):
     output_str = '--------------------------------------------------\n'

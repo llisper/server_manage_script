@@ -1,8 +1,8 @@
 import signal
 from os import path
 from subprocess import call, check_output, CalledProcessError
-from .. import util
-from ..config import Config
+from module import util
+from module.config import Config
 
 def cmd_debug(opt, slist):
     s = next(util.next_target(opt, slist))[1]
