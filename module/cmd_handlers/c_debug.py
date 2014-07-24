@@ -14,6 +14,6 @@ def cmd_debug(opt, slist):
         print 'unable to fetch pid, probably the process doesn\'t exists'
         return
 
-    cmd_gdb = 'gdb --pid={0} {1}'.format(int(pid), path.join(s.run, Config.target_name(s.target)))
+    cmd_gdb = ['gdb', '--pid=' + str(int(pid)), path.join(s.run, Config.target_name(s.target))]
     signal.signal(signal.SIGINT, signal.SIG_IGN)
-    call(cmd_gdb, shell=True)
+    call(cmd_gdb)
