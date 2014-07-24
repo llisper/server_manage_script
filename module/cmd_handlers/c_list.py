@@ -2,9 +2,12 @@ import tempfile
 from subprocess import check_output, CalledProcessError
 from module.config import Config
 from module import util
+from module import logutil
 
 def cmd_list(opt, slist):
     output_str = '--------------------------------------------------\n'
+    act_fmt = '| {0:<4}[' + logutil.hiswap('up', 'green', logutil.default_debug_color) + '] {1}/{2}\n|\t'
+    inact_fmt = '| {0:<4}[' + logutil.hiswap('down', 'red', logutil.default_debug_color) + '] {1}\n'
     for i, s in util.next_target(opt, slist):
         pstat_script = """
         pid=`ps ax|awk -v pn={0} -v r=1 \'$0~"[.]/"pn {{ print $1; r=0 }} END {{ exit r }}\'`
@@ -28,10 +31,10 @@ def cmd_list(opt, slist):
                 pass
 
         if active:
-            output_str += '| {0:<4}[active] {1}/{2}\n|\t'.format(str(i) + '.', s.target, output[0])
+            output_str += act_fmt.format(str(i) + '.', logutil.hiswap(s.target, 'green', logutil.default_debug_color), output[0])
             output_str += '\n|\t'.join(output[1:]) + '\n'
         else:
-            output_str += '| {0:<4}[inactive] {1}\n'.format(str(i) + '.', s.target)
+            output_str += inact_fmt.format(str(i) + '.', s.target)
 
     output_str += '--------------------------------------------------'
-    print output_str
+    logutil.debug(output_str)

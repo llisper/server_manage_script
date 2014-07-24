@@ -2,6 +2,7 @@ from os import path
 from subprocess import call
 from module.config import Config
 from module import util
+from module import logutil
 
 def cmd_install(opt, slist):
     num_installation = 0
@@ -22,7 +23,7 @@ def cmd_install(opt, slist):
         else:
             uptodate_targets.append(s.target)
 
-    print 'num of installation: ' + str(num_installation)
-    print 'updated targets:\n\t' + '\n\t'.join(update_targets)
-    print 'up-to-date targets:\n\t' + '\n\t'.join(uptodate_targets)
-    print 'failed targets:\n\t' + '\n\t'.join(failed_targets)
+    logutil.debug('num of installation: ' + str(num_installation))
+    logutil.debug('updated targets:\n\t' + '\n\t'.join(update_targets))
+    logutil.debug('up-to-date targets:\n\t' + '\n\t'.join(uptodate_targets))
+    logutil.debug('failed targets:\n\t' + '\n\t'.join(failed_targets))

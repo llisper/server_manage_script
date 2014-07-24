@@ -3,14 +3,27 @@ import sys
 import re
 import subprocess
 
-colors = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white'];
-color_base = 30
+__colors = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white'];
+__color_base = 30
+
+def __cindex(color):
+    return __colors.index(color) + __color_base
 
 def hilite(line, color):
-    return '\x1b[0;{0}m{1}\x1b[0m'.format(colors.index(color) + color_base, line)
+    if (color in __colors):
+        return '\x1b[0;{0}m{1}\x1b[0m'.format(__cindex(color), line)
+    else:
+        return line
+
+def hiswap(line, color, origin):
+    if (color in __colors) and (origin in __colors):
+        return '\x1b[0;{0}m{1}\x1b[0;{2}m' \
+                .format(__cindex(color), line, __cindex(origin))
+    else:
+        return line
 
 def color_line(line, pattern, color):
-    if len(pattern) > 0 and (color in colors) and re.search(pattern, line):
+    if len(pattern) > 0 and re.search(pattern, line):
         return True, hilite(line, color)
     else:
         return False, line
@@ -51,6 +64,10 @@ def track(logfile, *args):
             print line
     except KeyboardInterrupt:
         pass
+
+default_debug_color = 'white'
+def debug(log, color = default_debug_color):
+    print hilite(log, color)
 
 if __name__ == '__main__':
     logfile = sys.argv[1]
