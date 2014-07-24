@@ -9,14 +9,11 @@ color_base = 30
 def hilite(line, color):
     return '\x1b[0;{0}m{1}\x1b[0m'.format(colors.index(color) + color_base, line)
 
-def output_line(line, pattern, color):
-    line = line.strip()
-    if len(line) == 0:
-        return
+def color_line(line, pattern, color):
     if len(pattern) > 0 and (color in colors) and re.search(pattern, line):
-        print hilite(line, color)
+        return True, hilite(line, color)
     else:
-        print line
+        return False, line
 
 def tail(logfile, pattern = '', color = 'white'):
     p = None
@@ -28,13 +25,34 @@ def tail(logfile, pattern = '', color = 'white'):
         stream = p.stdout
     try:
         while True:
-            output_line(stream.readline(), pattern, color)
+            line = stream.readline().strip()
+            if len(line) == 0: continue
+            print color_line(line, pattern, color)[1]
     except KeyboardInterrupt:
         pass
 
+def track(logfile, *args):
+    p = None
+    stream = None
+    if logfile == '-':
+        stream = sys.stdin
+    else:
+        p = subprocess.Popen(['tail', '-f', logfile], stdout=subprocess.PIPE)
+        stream = p.stdout
+    try:
+        while True:
+            line = stream.readline().strip()
+            if len(line) == 0: continue
+            for i in range(len(args) / 2):
+                pattern = args[i * 2]
+                color = args[i * 2 + 1]
+                ret, line = color_line(line, pattern, color)
+                if ret: break
+            print line
+    except KeyboardInterrupt:
+        pass
 
 if __name__ == '__main__':
     logfile = sys.argv[1]
-    pattern = len(sys.argv) > 2 and sys.argv[2] or ''
-    color = len(sys.argv) > 3 and sys.argv[3] or 'white'
-    tail(logfile, *sys.argv[2:])
+    track(logfile, *sys.argv[2:])
+    #tail(logfile, *sys.argv[2:])
