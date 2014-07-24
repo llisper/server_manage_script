@@ -27,3 +27,4 @@ def cmd_compile(opt, slist):
     logutil.debug('number of compile: ' + str(num_compile))
     logutil.debug('succeed targets:\n\t' + '\n\t'.join(succeed_targets))
     logutil.debug('failed targets:\n\t' + '\n\t'.join(failed_targets))
+    return len(failed_targets)

@@ -27,3 +27,5 @@ def cmd_install(opt, slist):
     logutil.debug('updated targets:\n\t' + '\n\t'.join(update_targets))
     logutil.debug('up-to-date targets:\n\t' + '\n\t'.join(uptodate_targets))
     logutil.debug('failed targets:\n\t' + '\n\t'.join(failed_targets))
+
+    return len(failed_targets)

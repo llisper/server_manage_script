@@ -77,4 +77,4 @@ for name in sys.modules:
         handler_list.append(getattr(sys.modules[name], 'cmd_' + m.group(1)))
 
 driver = Driver(*handler_list)
-driver.run(parser, *[server_list])
+sys.exit(driver.run(parser, *[server_list]))

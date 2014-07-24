@@ -21,3 +21,5 @@ def cmd_stop(opt, slist):
         logutil.debug('clean shm: ' + cmd_clean_shm, 'yellow')
         call(cmd_clean_shm, shell=True)
         time.sleep(1.0)
+
+    return 0

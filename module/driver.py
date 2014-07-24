@@ -25,5 +25,6 @@ class Driver:
         print cmd, opt
         if cmd in self.cmd_handlers:
             h = self.cmd_handlers[cmd]
-            h(opt, *args)
-
+            return h(opt, *args)
+        else:
+            return -1

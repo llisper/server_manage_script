@@ -8,9 +8,10 @@ def cmd_push(opt, slist):
         print 'server port mapping:'
         for i in svr_map:
             print '{0} -> {1}'.format(i, svr_map[i])
-        return
+        return 0
 
     if svr_map.has_key(opt.service_name):
         cmd = '/usr/local/taf/bin/tafadminclient --ipport=10.1.152.64:{0} --command="{1}"' \
                 .format(svr_map[opt.service_name], ' '.join(opt.args))
-        call(cmd, shell=True)
+        return call(cmd, shell=True)
+    return -1

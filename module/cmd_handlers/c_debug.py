@@ -12,8 +12,8 @@ def cmd_debug(opt, slist):
         pid = check_output(cmd_pid, shell=True)
     except subprocess.CalledProcessError:
         print 'unable to fetch pid, probably the process doesn\'t exists'
-        return
+        return -1
 
     cmd_gdb = ['gdb', '--pid=' + str(int(pid)), path.join(s.run, Config.target_name(s.target))]
     signal.signal(signal.SIGINT, signal.SIG_IGN)
-    call(cmd_gdb)
+    return call(cmd_gdb)

@@ -38,3 +38,4 @@ def cmd_list(opt, slist):
 
     output_str += '--------------------------------------------------'
     logutil.debug(output_str)
+    return 0
