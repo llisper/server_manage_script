@@ -20,3 +20,4 @@ def cmd_stop(opt, slist):
         cmd_clean_shm = 'ipcs -m|awk \'$6 == 0 { print "ipcrm -m", $2 }\'|sh'
         logutil.debug('clean shm: ' + cmd_clean_shm, 'yellow')
         call(cmd_clean_shm, shell=True)
+        time.sleep(1.0)
