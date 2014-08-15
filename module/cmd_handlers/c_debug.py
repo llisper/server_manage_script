@@ -10,7 +10,7 @@ def cmd_debug(opt, slist):
             .format(Config.target_name(s.target))
     try:
         pid = check_output(cmd_pid, shell=True)
-    except subprocess.CalledProcessError:
+    except CalledProcessError:
         print 'unable to fetch pid, probably the process doesn\'t exists'
         return -1
 
